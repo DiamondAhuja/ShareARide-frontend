@@ -66,18 +66,15 @@ public class MainActivity extends AppCompatActivity {
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
-                Log.v("THE TOKEN", message);
                 PREF.edit().putString("Token", message).commit();
                 return true;
             }
         });
 
         Button connect = findViewById(R.id.connect);
-        Log.v("RUNNING", "RUNNING");
         connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.v("RUNNING", "RUNNING");
                 Intent intent = new Intent(v.getContext(), MyService.class);
                 intent.putExtra("Token", PREF.getString("Token", null));
                 intent.setAction("START_ACTIVITY_ACTION");
