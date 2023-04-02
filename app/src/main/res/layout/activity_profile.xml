@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <WebView
+        android:id="@+id/discord_webview"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/btn_discord_login"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:text="Login with Discord"
+        android:backgroundTint="@color/discord_gray"
+        android:drawableLeft="@drawable/ic_discord"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:id="@+id/btn_discord_connect"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:text="Connect"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:id="@+id/btn_discord_disconnect"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:text="Disconnect"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="center_horizontal" />
+
+</LinearLayout>

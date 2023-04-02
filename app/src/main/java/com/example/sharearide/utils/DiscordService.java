@@ -1,4 +1,4 @@
-package com.example.sharearide;
+package com.example.sharearide.utils;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -6,7 +6,6 @@ import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -18,7 +17,7 @@ import com.my.kizzyrpc.model.Timestamps;
 
 import java.util.Arrays;
 
-public class MyService extends Service {
+public class DiscordService extends Service {
     private KizzyRPC kizzyRPC;
     private String token;
 

@@ -8,36 +8,5 @@
     tools:context=".MainActivity"
     android:orientation="vertical">
 
-    <WebView
-        android:id="@+id/webview"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:visibility="gone" />
-
-    <Button
-        android:id="@+id/login"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:text="Login"
-        android:layout_marginTop="15dp"
-        android:layout_gravity="center_horizontal"
-        android:onClick="login"/>
-
-    <Button
-        android:id="@+id/connect"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:text="Connect"
-        android:layout_marginTop="15dp"
-        android:layout_gravity="center_horizontal" />
-
-    <Button
-        android:id="@+id/disconnect"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:text="Disconnect"
-        android:layout_marginTop="15dp"
-        android:layout_gravity="center_horizontal" />
-
 
 </LinearLayout>
