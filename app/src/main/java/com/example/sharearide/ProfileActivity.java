@@ -5,18 +5,22 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
 import android.webkit.WebStorage;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.sharearide.utils.DiscordService;
 
@@ -30,6 +34,13 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("Profile Settings");
+
         PREF = PreferenceManager.getDefaultSharedPreferences(this);
 
         WebView webView = findViewById(R.id.discord_webview);
@@ -38,17 +49,17 @@ public class ProfileActivity extends AppCompatActivity {
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                Log.d("Web", "Attempt to enter " + request.getUrl().toString());
                 view.stopLoading();
+
                 if (request.getUrl().toString().endsWith("/app")) {
                     view.setVisibility(View.GONE);
                     view.loadUrl(JS_SNIPPET);
+                    view.getSettings().setJavaScriptEnabled(false);
 
                     view.clearCache(true);
                     view.clearHistory();
                     view.clearFormData();
                     view.clearSslPreferences();
-
 
                     WebStorage.getInstance().deleteAllData();
                     CookieManager.getInstance().removeAllCookies(null);
@@ -93,5 +104,13 @@ public class ProfileActivity extends AppCompatActivity {
                 stopService(new Intent(v.getContext(), DiscordService.class));
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

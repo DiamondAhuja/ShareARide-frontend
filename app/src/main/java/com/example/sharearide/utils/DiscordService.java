@@ -40,21 +40,21 @@ public class DiscordService extends Service {
         {
             kizzyRPC.setActivity(
                     new Activity(
-                            "hi",
-                            "STATEEE",
-                            "details",
+                            "ShareARide",
+                            "Offering a Ride",
+                            "Carpooling",
                             0,
-                            new Timestamps(System.currentTimeMillis(), System.currentTimeMillis() + 500000),
+                            new Timestamps(null, System.currentTimeMillis()),
                             new Assets(
-                                    "mp:attachments/973256105515974676/983674644823412798/unknown.png",
-                                    "mp:attachments/973256105515974676/983674644823412798/unknown.png",
-                                    "large-image-text",
-                                    "small-image-text"
+                                    "mp:attachments/966488590550986772/1091897337082818560/1024x1024.jpg",
+                                    null,
+                                    "Share a Ride",
+                                    null
                             ),
-                            Arrays.asList("Button1", "Button2"),
+                            Arrays.asList("Get the App!", "Join!"),
                             new Metadata(Arrays.asList(
-                                    "https://youtu.be/1yVm_M1sKBE",
-                                    "https://youtu.be/1yVm_M1sKBE"
+                                    "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                                    "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
                             )),
                             "962990036020756480"
                     ), "online", System.currentTimeMillis());
