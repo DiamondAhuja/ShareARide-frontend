@@ -1,5 +1,6 @@
 package com.example.sharearide;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -71,23 +72,26 @@ public class HomePageActivity extends Fragment {
         offer_btn = (Button) rootView.findViewById(R.id.btn_offer);
         request_btn = (Button) rootView.findViewById(R.id.btn_request);
 
-//        request_btn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
+        request_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), RequestActivity.class);
+                startActivity(intent);
+            }
+        });
 
-//        offer.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!temp_btn.isChecked() && !recur_btn.isChecked()) {
-//                    // show an error message
-//                } else {
-//                    // to another page
-//                }
-//            }
-//        });
+        offer_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (temp_btn.isChecked()) {
+                    Intent intent = new Intent(getActivity(), TempOfferActivity.class);
+                    startActivity(intent);
+                } else if (recur_btn.isChecked()) {
+                    Intent intent = new Intent(getActivity(), RecurOfferActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
 
         temp_btn.setOnClickListener(new View.OnClickListener() {
             @Override
