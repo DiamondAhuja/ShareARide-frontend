@@ -5,36 +5,96 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:elevation="4dp"
+        android:theme="@style/Toolbar" />
+
     <WebView
         android:id="@+id/discord_webview"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:visibility="gone" />
 
-    <Button
-        android:id="@+id/btn_discord_login"
-        android:layout_width="250dp"
-        android:layout_height="50dp"
-        android:text="Login with Discord"
-        android:backgroundTint="@color/discord_gray"
-        android:drawableLeft="@drawable/ic_discord"
-        android:layout_marginTop="15dp"
-        android:layout_gravity="center_horizontal" />
+    <LinearLayout
+        android:id="@+id/ll_sharearide"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btn_discord_connect"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:text="Connect"
-        android:layout_marginTop="15dp"
-        android:layout_gravity="center_horizontal" />
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/btn_discord_disconnect"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:text="Disconnect"
-        android:layout_marginTop="15dp"
-        android:layout_gravity="center_horizontal" />
+    <LinearLayout
+        android:id="@+id/ll_discord"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btn_discord_login"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:text="Login with Discord"
+            android:backgroundTint="@color/discord_gray"
+            android:drawableLeft="@drawable/ic_discord"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center_horizontal"
+            android:visibility="visible"/>
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:visibility="gone" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:visibility="visible" />
+
+        <LinearLayout
+            android:id="@+id/ll_discord_test"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp"
+            android:visibility="visible">
+
+            <Button
+                android:id="@+id/btn_discord_connect"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:text="Connect"
+                android:layout_marginTop="15dp"
+                android:layout_gravity="center_horizontal" />
+
+            <Button
+                android:id="@+id/btn_discord_disconnect"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:text="Disconnect"
+                android:layout_marginTop="15dp"
+                android:layout_gravity="center_horizontal" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_discord_logout"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:text="Logout"
+            android:backgroundTint="@color/design_default_color_error"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center_horizontal"
+            android:visibility="visible"/>
+    </LinearLayout>
+
 
 </LinearLayout>
