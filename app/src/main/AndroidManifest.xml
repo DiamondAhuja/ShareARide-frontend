@@ -7,6 +7,10 @@
     <uses-permission android:name="android.permission.INTERNET" /> <!-- <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:networkSecurityConfig="@xml/network_security_config"
         android:usesCleartextTraffic="true"
@@ -57,6 +61,10 @@
 
         <activity
             android:name=".RecurOfferActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ScanQRCodeActivity"
             android:exported="false" />
     </application>
 

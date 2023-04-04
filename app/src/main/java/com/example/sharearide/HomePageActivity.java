@@ -84,7 +84,7 @@ public class HomePageActivity extends Fragment {
             @Override
             public void onClick(View v) {
                 if (temp_btn.isChecked()) {
-                    Intent intent = new Intent(getActivity(), TempOfferActivity.class);
+                    Intent intent = new Intent(getActivity(), ScanQRCodeActivity.class);
                     startActivity(intent);
                 } else if (recur_btn.isChecked()) {
                     Intent intent = new Intent(getActivity(), RecurOfferActivity.class);
