@@ -73,7 +73,8 @@ public class LoginActivity extends AppCompatActivity {
     private void loginPost(String email, String password){
         try {
             RequestQueue requestQueue = Volley.newRequestQueue(this);
-            String URL = "https://sharearide-backend-production.up.railway.app/login";
+            //String URL = "https://sharearide-backend-production.up.railway.app/login";
+            String URL = "http://192.168.0.144:5050/login";
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("email", email);
             jsonBody.put("password", password);
@@ -83,6 +84,20 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(String response) {
                     Log.i("VOLLEY", response);
+                    if (!response.contains("{\"Message\":")) {
+                        if (response.equals("Login failed The password is invalid or the user does not have a password.")) {
+                            Toast.makeText(LoginActivity.this, response, Toast.LENGTH_LONG).show();
+                            etpassword.setText("");
+                        }
+                        else if(response.equals("Login failed The email address is badly formatted.")){
+                            Toast.makeText(LoginActivity.this, response, Toast.LENGTH_LONG).show();
+                            etemail.setText("");
+                        }
+                        else{
+                            Toast.makeText(LoginActivity.this, "Email or password not recognized please try again", Toast.LENGTH_LONG).show();
+                        }
+                    }
+
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -113,7 +128,7 @@ public class LoginActivity extends AppCompatActivity {
                         responseString = String.valueOf(response.statusCode);
                         // can get more details such as response.headers
                     }
-                    return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                    return super.parseNetworkResponse(response);
                 }
             };
 
