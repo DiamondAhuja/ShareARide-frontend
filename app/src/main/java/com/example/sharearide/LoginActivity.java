@@ -4,14 +4,20 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.security.ProviderInstaller;
@@ -21,6 +27,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Please enter both the values", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                postDataUsingVolley(etemail.getText().toString(), etpassword.getText().toString());
+                loginPost(etemail.getText().toString(), etpassword.getText().toString());
             }
         });
 
@@ -63,82 +70,58 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void insertData(){
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Map<String, Object> user = new HashMap<>();
-        String username = etemail.getText().toString();
-        String password = etpassword.getText().toString();
+    private void loginPost(String email, String password){
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            String URL = "https://sharearide-backend-production.up.railway.app/login";
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put("email", email);
+            jsonBody.put("password", password);
+            final String requestBody = jsonBody.toString();
 
-        user.put("email", username);
-        user.put("password", password);
-
-        db.collection("users").add(user);
-
-        Toast.makeText(LoginActivity.this, "Inserted!", Toast.LENGTH_SHORT).show();
-
-    }
-
-    private void postDataUsingVolley(String email, String password) {
-        // url to post our data
-        String url = "http://10.0.2.2:5050/login";
-
-        // creating a new variable for our request queue
-        RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
-
-        // on below line we are calling a string
-        // request method to post the data to our API
-        // in this we are calling a post method.
-        StringRequest request = new StringRequest(Request.Method.POST, url, new com.android.volley.Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-
-                // inside on response method we are
-                // hiding our progress bar
-                // and setting data to edit text as empty
-                etemail.setText("");
-                etpassword.setText("");
-
-                // on below line we are displaying a success toast message.
-                Toast.makeText(LoginActivity.this, "Data added to API", Toast.LENGTH_SHORT).show();
-                try {
-                    // on below line we are parsing the response
-                    // to json object to extract data from it.
-                    JSONObject respObj = new JSONObject(response);
-
-                    // below are the strings which we
-                    // extract from our json object.
-                    String email = respObj.getString("email");
-                    String password = respObj.getString("password");
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Log.i("VOLLEY", response);
                 }
-            }
-        }, new com.android.volley.Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                // method to handle errors.
-                Toast.makeText(LoginActivity.this, "Fail to get response = " + error, Toast.LENGTH_SHORT).show();
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() {
-                // below line we are creating a map for
-                // storing our values in key and value pair.
-                Map<String, String> params = new HashMap<String, String>();
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.e("VOLLEY", error.toString());
+                }
+            }) {
 
-                // on below line we are passing our key
-                // and value pair to our parameters.
-                params.put("email", email);
-                params.put("password", password);
+                @Override
+                public String getBodyContentType() {
+                    return "application/json; charset=utf-8";
+                }
 
-                // at last we are
-                // returning our params.
-                return params;
-            }
-        };
-        // below line is to make
-        // a json object request.
-        queue.add(request);
+                @Override
+                public byte[] getBody() throws AuthFailureError {
+                    try {
+                        return requestBody == null ? null : requestBody.getBytes("utf-8");
+                    } catch (UnsupportedEncodingException uee) {
+                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                        return null;
+                    }
+                }
+
+                @Override
+                protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                    String responseString = "";
+                    if (response != null) {
+                        responseString = String.valueOf(response.statusCode);
+                        // can get more details such as response.headers
+                    }
+                    return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                }
+            };
+
+            requestQueue.add(stringRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
+
 }
