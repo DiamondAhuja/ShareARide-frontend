@@ -18,11 +18,11 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void configureButton(){
-        Button loginButton = (Button) findViewById(R.id.loginbtn);
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        Button registerButton = (Button) findViewById(R.id.regloginbtn);
+        registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                finish();
             }
         });
     }

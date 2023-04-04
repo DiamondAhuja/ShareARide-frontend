@@ -2,6 +2,7 @@ package com.example.sharearide;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,14 +11,12 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.security.ProviderInstaller;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,26 +35,30 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        //configureRegisterButton();
-
-        etemail.findViewById(R.id.loginemail);
-        etpassword.findViewById(R.id.loginpassword);
-        login.findViewById(R.id.loginbtn);
+        etemail = findViewById(R.id.loginemail);
+        etpassword = findViewById(R.id.loginpassword);
+        login = findViewById(R.id.loginbtn);
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (etemail.getText().toString().isEmpty() && etpassword.getText().toString().isEmpty()) {
+                    Toast.makeText(LoginActivity.this, "Please enter both the values", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 postDataUsingVolley(etemail.getText().toString(), etpassword.getText().toString());
             }
         });
+
+        configureRegisterButton();
     }
 
     private void configureRegisterButton(){
-        Button registerButton = (Button) findViewById(R.id.switchregister);
-        registerButton.setOnClickListener(new View.OnClickListener() {
+        Button loginButton = (Button) findViewById(R.id.switchregister);
+        loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
             }
         });
     }
@@ -77,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void postDataUsingVolley(String email, String password) {
         // url to post our data
-        String url = "localhost:5050/login";
+        String url = "http://10.0.2.2:5050/login";
 
         // creating a new variable for our request queue
         RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
@@ -88,6 +91,7 @@ public class LoginActivity extends AppCompatActivity {
         StringRequest request = new StringRequest(Request.Method.POST, url, new com.android.volley.Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+
                 // inside on response method we are
                 // hiding our progress bar
                 // and setting data to edit text as empty
