@@ -2,6 +2,7 @@ package com.example.sharearide;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +21,8 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.sharearide.utils.QueryServer;
+import com.example.sharearide.utils.ServerCallback;
 import com.google.android.gms.security.ProviderInstaller;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -31,8 +34,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LoginActivity extends AppCompatActivity {
-
+public class LoginActivity extends AppCompatActivity implements ServerCallback {
     EditText etemail;
     EditText etpassword;
     MaterialButton login;
@@ -71,72 +73,28 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginPost(String email, String password){
-        try {
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
-            //String URL = "https://sharearide-backend-production.up.railway.app/login";
-            String URL = "http://192.168.0.144:5050/login";
-            JSONObject jsonBody = new JSONObject();
-            jsonBody.put("email", email);
-            jsonBody.put("password", password);
-            final String requestBody = jsonBody.toString();
-
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    Log.i("VOLLEY", response);
-                    if (!response.contains("{\"Message\":")) {
-                        if (response.equals("Login failed The password is invalid or the user does not have a password.")) {
-                            Toast.makeText(LoginActivity.this, response, Toast.LENGTH_LONG).show();
-                            etpassword.setText("");
-                        }
-                        else if(response.equals("Login failed The email address is badly formatted.")){
-                            Toast.makeText(LoginActivity.this, response, Toast.LENGTH_LONG).show();
-                            etemail.setText("");
-                        }
-                        else{
-                            Toast.makeText(LoginActivity.this, "Email or password not recognized please try again", Toast.LENGTH_LONG).show();
-                        }
-                    }
-
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.e("VOLLEY", error.toString());
-                }
-            }) {
-
-                @Override
-                public String getBodyContentType() {
-                    return "application/json; charset=utf-8";
-                }
-
-                @Override
-                public byte[] getBody() throws AuthFailureError {
-                    try {
-                        return requestBody == null ? null : requestBody.getBytes("utf-8");
-                    } catch (UnsupportedEncodingException uee) {
-                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
-                        return null;
-                    }
-                }
-
-                @Override
-                protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                    String responseString = "";
-                    if (response != null) {
-                        responseString = String.valueOf(response.statusCode);
-                        // can get more details such as response.headers
-                    }
-                    return super.parseNetworkResponse(response);
-                }
-            };
-
-            requestQueue.add(stringRequest);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
+        QueryServer.login(this, email, password);
     }
 
+    @Override
+    public void onDone(String response) {
+        if (!response.contains("{\"Message\":")) {
+            if (response.equals("Login failed The password is invalid or the user does not have a password.")) {
+                Toast.makeText(this, response, Toast.LENGTH_LONG).show();
+                etpassword.setText("");
+            }
+            else if(response.equals("Login failed The email address is badly formatted.")){
+                Toast.makeText(this, response, Toast.LENGTH_LONG).show();
+                etemail.setText("");
+            }
+            else{
+                Toast.makeText(this, "Email or password not recognized please try again", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
+    }
 }
