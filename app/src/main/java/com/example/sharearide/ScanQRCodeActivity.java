@@ -103,6 +103,14 @@ public class ScanQRCodeActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         // Retrieve the scan result from the Intent
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
@@ -115,14 +123,6 @@ public class ScanQRCodeActivity extends AppCompatActivity {
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private class LoadImageTask extends AsyncTask<Uri, Void, Bitmap> {
