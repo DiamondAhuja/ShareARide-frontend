@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent" >
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/my_toolbar"
@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/submit"
         android:layout_width="340dp"
         android:layout_height="wrap_content"
         android:text="Offer"
@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_gravity="right|center_vertical"
-            android:padding="30dp" >
+            android:padding="30dp">
 
             <TextView
                 android:id="@+id/taxi_id_text"
@@ -108,54 +108,108 @@
                 android:enabled="false" />
 
             <TextView
-                android:id="@+id/text_1"
+                android:id="@+id/departure_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Depature" />
 
-            <EditText
-                android:id="@+id/departure"
+            <FrameLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="" />
+                android:layout_height="wrap_content" >
 
-            <TextView
-                android:id="@+id/destination_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Destination" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <EditText
+                        android:id="@+id/departure"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:text="" />
+                    <TextView
+                        android:id="@+id/destination_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Destination" />
 
-            <EditText
-                android:id="@+id/destination"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="" />
+                    <EditText
+                        android:id="@+id/destination"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:text="" />
 
-            <TextView
-                android:id="@+id/num_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Number of Carpools" />
+                    <TextView
+                        android:id="@+id/num_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Number of Carpools" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout3"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textInputLayout3"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
 
-                <AutoCompleteTextView
-                    android:id="@+id/num_of_carpool"
-                    android:layout_width="180dp"
-                    android:layout_height="35dp"
-                    android:inputType="none"
-                    android:padding="0dp"
-                    android:text="number"
-                    android:textSize="16sp"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                        <AutoCompleteTextView
+                            android:id="@+id/num_of_carpool"
+                            android:layout_width="180dp"
+                            android:layout_height="35dp"
+                            android:inputType="none"
+                            android:padding="0dp"
+                            android:text="number"
+                            android:textSize="16sp"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:elevation="16dp"
+                    android:id="@+id/recyclerview">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="40dp"
+                        android:id="@+id/departure_list"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+                    </androidx.recyclerview.widget.RecyclerView>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:elevation="16dp"
+                    android:id="@+id/recyclerview2">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="100dp"
+                        android:id="@+id/destination_list"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+                    </androidx.recyclerview.widget.RecyclerView>
+                </RelativeLayout>
+            </FrameLayout>
+
+
+<!--            <androidx.cardview.widget.CardView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent" >-->
+
+<!--                <fragment android:id="@+id/autocomplete_fragment"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"-->
+<!--                    />-->
+<!--            </androidx.cardview.widget.CardView>-->
+
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

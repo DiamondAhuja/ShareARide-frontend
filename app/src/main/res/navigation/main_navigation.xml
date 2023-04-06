@@ -11,7 +11,7 @@
         android:label="fragment_first"
         tools:layout="@layout/home_page" />
     <fragment
-        android:id="@+id/notificationList"
+        android:id="@+id/scheduledList"
         android:name="com.example.sharearide.SecondFragment"
         android:label="fragment_second"
         tools:layout="@layout/fragment_second" />
