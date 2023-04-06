@@ -6,121 +6,219 @@
     android:layout_height="match_parent">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar2"
+        android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="90dp"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="?attr/actionBarSize"
+        android:elevation="4dp"
+        android:theme="@style/Toolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <ImageView
-        android:id="@+id/back_btn"
-        android:layout_width="40dp"
-        android:layout_height="50dp"
-        android:src="@drawable/ic_arrow"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.043"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.035" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView3"
-        android:layout_width="330dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="24dp"
-        app:cardCornerRadius="35dp"
+        android:id="@+id/cardView"
+        android:layout_width="380dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="70dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <SearchView
-            android:id="@+id/searchView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white"
-            android:queryHint="Enter the destination..." />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="left"
+            android:layout_marginStart="10dp"
+            android:paddingStart="6dp"
+            android:paddingTop="13dp" >
+
+            <ImageView
+                android:id="@+id/collect_image"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/icon_collect"
+                android:layout_marginBottom="5dp"/>
+
+            <ImageView
+                android:id="@+id/location_image"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/icon_location" />
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="380dp"
+            android:layout_height="wrap_content" >
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="right"
+                android:layout_marginRight="10dp"
+                android:padding="10dp"
+                android:elevation="8dp" >
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" >
+
+                        <EditText
+                            android:id="@+id/departure"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="14"
+                            android:inputType="textPersonName"
+                            android:text="" />
+
+                        <EditText
+                            android:id="@+id/destination"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="14"
+                            android:inputType="textPersonName"
+                            android:text="" />
+
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:elevation="16dp"
+                        android:id="@+id/recyclerview">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="40dp"
+                            android:layout_marginStart="0dp"
+                            android:layout_marginBottom="0dp"
+                            android:id="@+id/departure_list"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+                        </androidx.recyclerview.widget.RecyclerView>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:elevation="16dp"
+                        android:id="@+id/recyclerview2">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="100dp"
+                            android:layout_marginStart="0dp"
+                            android:layout_marginBottom="0dp"
+                            android:id="@+id/destination_list"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+                        </androidx.recyclerview.widget.RecyclerView>
+                    </RelativeLayout>
+                </FrameLayout>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="380dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="100dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="10dp" >
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayout3"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" >
+
+                    <AutoCompleteTextView
+                        android:id="@+id/trip_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:inputType="none"
+                        android:padding="0dp"
+                        android:text="Trip-type"
+                        android:textSize="13sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayout4"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" >
+
+                    <AutoCompleteTextView
+                        android:id="@+id/rating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:inputType="none"
+                        android:padding="0dp"
+                        android:text="Rating Above"
+                        android:textSize="13sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:backgroundTint="@color/purple_200"
+                    android:drawableTop="@drawable/ic_searching"
+                    android:padding="9dp"
+                    app:cornerRadius="28dp"
+                    android:layout_weight="0" />
+            </LinearLayout>
+
+        </FrameLayout>
+
+
 
     </androidx.cardview.widget.CardView>
 
-        <Button
-            android:id="@+id/location_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="45dp"
-            android:layout_marginTop="100dp"
-            android:layout_marginEnd="100dp"
-            android:backgroundTint="@color/purple_200"
-            android:text="Location"
-            android:textAllCaps="false"
-            android:textColor="@color/purple_500"
-            android:textSize="13sp"
-            app:cornerRadius="32dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.059"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout3"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="58dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <!--    <Button-->
+<!--        android:id="@+id/location_btn"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="45dp"-->
+<!--        android:layout_marginTop="192dp"-->
+<!--        android:layout_marginEnd="100dp"-->
+<!--        android:backgroundTint="@color/purple_200"-->
+<!--        android:text="Location"-->
+<!--        android:textAllCaps="false"-->
+<!--        android:textColor="@color/purple_500"-->
+<!--        android:textSize="13sp"-->
+<!--        app:cornerRadius="32dp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.086"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
-        <AutoCompleteTextView
-            android:id="@+id/trip_type"
-            android:layout_width="133dp"
-            android:layout_height="35dp"
-            android:inputType="none"
-            android:padding="0dp"
-            android:text="Trip-type"
-            android:textSize="13sp"/>
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout4"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="220dp"
-        android:layout_marginTop="100dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.694"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <AutoCompleteTextView
-            android:id="@+id/rating"
-            android:layout_width="150dp"
-            android:layout_height="35dp"
-            android:inputType="none"
-            android:padding="10dp"
-            android:text="Rating Above"
-            android:textSize="13sp"/>
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <TextView
-        android:id="@+id/address_text"
-        android:layout_width="91dp"
-        android:layout_height="67dp"
-        android:layout_marginBottom="420dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+<!--    <TextView-->
+<!--        android:id="@+id/address_text"-->
+<!--        android:layout_width="91dp"-->
+<!--        android:layout_height="67dp"-->
+<!--        android:layout_marginBottom="420dp"-->
+<!--        android:text="TextView"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
