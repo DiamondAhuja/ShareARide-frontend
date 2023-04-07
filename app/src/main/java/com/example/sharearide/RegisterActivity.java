@@ -1,33 +1,16 @@
 package com.example.sharearide;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkResponse;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.HttpHeaderParser;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.sharearide.utils.QueryServer;
 import com.example.sharearide.utils.ServerCallback;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
 
 public class RegisterActivity extends AppCompatActivity implements ServerCallback {
 
@@ -55,20 +38,18 @@ public class RegisterActivity extends AppCompatActivity implements ServerCallbac
         etaddress = findViewById(R.id.address);
         etdob = findViewById(R.id.dob);
         register = findViewById(R.id.signupbtn);
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!etpassword.getText().toString().equals(etrepassword.getText().toString())) {
-                    Toast.makeText(RegisterActivity.this, "Please ensure passwords match!", Toast.LENGTH_LONG).show();
-                    etpassword.setText("");
-                    etrepassword.setText("");
-                    return;
-                }
-                else if (etpassword.getText().toString().length() == 0){
-                    Toast.makeText(RegisterActivity.this, "Please write a password!", Toast.LENGTH_LONG).show();
-                }
-                registerPost();
+        register.setOnClickListener(view -> {
+            if (!etpassword.getText().toString().equals(etrepassword.getText().toString())) {
+                Toast.makeText(RegisterActivity.this, "Please ensure passwords match!", Toast.LENGTH_LONG).show();
+                etpassword.setText("");
+                etrepassword.setText("");
+                return;
             }
+            else if (etpassword.getText().toString().length() == 0){
+                Toast.makeText(RegisterActivity.this, "Please write a password!", Toast.LENGTH_LONG).show();
+                return;
+            }
+            registerPost();
         });
 
         configureButton();
@@ -76,12 +57,7 @@ public class RegisterActivity extends AppCompatActivity implements ServerCallbac
 
     private void configureButton(){
         Button registerButton = (Button) findViewById(R.id.regloginbtn);
-        registerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        registerButton.setOnClickListener(view -> finish());
     }
 
     private void registerPost(){
@@ -92,7 +68,7 @@ public class RegisterActivity extends AppCompatActivity implements ServerCallbac
 
     @Override
     public void onDone(String response) {
-
+        startActivity(new Intent(RegisterActivity.this, MainActivity.class));
     }
 
     @Override
