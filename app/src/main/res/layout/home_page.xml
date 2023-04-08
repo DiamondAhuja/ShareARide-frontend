@@ -34,39 +34,39 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.348" />
 
-    <ToggleButton
-        android:id="@+id/btn_temp"
-        android:layout_width="140dp"
-        android:layout_height="65dp"
-        android:backgroundTint="@color/offer_btn_state"
-        android:textColor="@color/purple_500"
-        android:textOff="Temporary"
-        android:textOn="Temporary"
-        android:textSize="17sp"
-        android:textStyle="normal|bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.18"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.559" />
+<!--    <ToggleButton-->
+<!--        android:id="@+id/btn_temp"-->
+<!--        android:layout_width="140dp"-->
+<!--        android:layout_height="65dp"-->
+<!--        android:backgroundTint="@color/offer_btn_state"-->
+<!--        android:textColor="@color/purple_500"-->
+<!--        android:textOff="Temporary"-->
+<!--        android:textOn="Temporary"-->
+<!--        android:textSize="17sp"-->
+<!--        android:textStyle="normal|bold"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.18"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.559" />-->
 
-    <ToggleButton
-        android:id="@+id/btn_recur"
-        android:layout_width="140dp"
-        android:layout_height="65dp"
-        android:backgroundTint="@color/offer_btn_state"
-        android:textColor="@color/purple_500"
-        android:textOff="Recurring"
-        android:textOn="Recurring"
-        android:textSize="17sp"
-        android:textStyle="normal|bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.815"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.557" />
+<!--    <ToggleButton-->
+<!--        android:id="@+id/btn_recur"-->
+<!--        android:layout_width="140dp"-->
+<!--        android:layout_height="65dp"-->
+<!--        android:backgroundTint="@color/offer_btn_state"-->
+<!--        android:textColor="@color/purple_500"-->
+<!--        android:textOff="Recurring"-->
+<!--        android:textOn="Recurring"-->
+<!--        android:textSize="17sp"-->
+<!--        android:textStyle="normal|bold"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.815"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.557" />-->
 
     <Button
         android:id="@+id/btn_offer"
@@ -77,8 +77,8 @@
         android:textStyle="normal|bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.725" />
+        app:layout_constraintTop_toTopOf="parent" />
+<!--        app:layout_constraintHorizontal_bias="0.494"-->
+<!--        app:layout_constraintVertical_bias="0.725" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

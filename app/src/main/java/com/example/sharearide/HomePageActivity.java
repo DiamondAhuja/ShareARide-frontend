@@ -59,7 +59,7 @@ public class HomePageActivity extends Fragment {
         }
     }
 
-    ToggleButton temp_btn, recur_btn;
+//    ToggleButton temp_btn, recur_btn;
     Button offer_btn, request_btn;
 
     @Override
@@ -67,8 +67,8 @@ public class HomePageActivity extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.home_page, container, false);
-        temp_btn = (ToggleButton) rootView.findViewById(R.id.btn_temp);
-        recur_btn = (ToggleButton) rootView.findViewById(R.id.btn_recur);
+//        temp_btn = (ToggleButton) rootView.findViewById(R.id.btn_temp);
+//        recur_btn = (ToggleButton) rootView.findViewById(R.id.btn_recur);
         offer_btn = (Button) rootView.findViewById(R.id.btn_offer);
         request_btn = (Button) rootView.findViewById(R.id.btn_request);
 
@@ -83,33 +83,35 @@ public class HomePageActivity extends Fragment {
         offer_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (temp_btn.isChecked()) {
-                    Intent intent = new Intent(getActivity(), ScanQRCodeActivity.class);
-                    startActivity(intent);
-                } else if (recur_btn.isChecked()) {
-                    Intent intent = new Intent(getActivity(), RecurOfferActivity.class);
-                    startActivity(intent);
-                }
+                Intent intent = new Intent(getActivity(), ScanQRCodeActivity.class);
+                startActivity(intent);
+//                if (temp_btn.isChecked()) {
+//                    Intent intent = new Intent(getActivity(), ScanQRCodeActivity.class);
+//                    startActivity(intent);
+//                } else if (recur_btn.isChecked()) {
+//                    Intent intent = new Intent(getActivity(), RecurOfferActivity.class);
+//                    startActivity(intent);
+//                }
             }
         });
 
-        temp_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (temp_btn.isChecked()) {
-                    recur_btn.setChecked(false);
-                }
-            }
-        });
-
-        recur_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (recur_btn.isChecked()) {
-                    temp_btn.setChecked(false);
-                }
-            }
-        });
+//        temp_btn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (temp_btn.isChecked()) {
+//                    recur_btn.setChecked(false);
+//                }
+//            }
+//        });
+//
+//        recur_btn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (recur_btn.isChecked()) {
+//                    temp_btn.setChecked(false);
+//                }
+//            }
+//        });
 
         return rootView;
     }
