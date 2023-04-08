@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.sharearide.utils.QueryServer;
 import com.example.sharearide.utils.ServerCallback;
 
+import org.json.JSONObject;
+
 public class RegisterActivity extends AppCompatActivity implements ServerCallback {
 
     EditText etemail;
@@ -70,6 +72,8 @@ public class RegisterActivity extends AppCompatActivity implements ServerCallbac
     public void onDone(String response) {
         startActivity(new Intent(RegisterActivity.this, MainActivity.class));
     }
+
+    public void onSuccess(JSONObject response) {}
 
     @Override
     public Context getContext() {

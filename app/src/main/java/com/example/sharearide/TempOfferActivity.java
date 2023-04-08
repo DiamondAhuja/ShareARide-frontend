@@ -148,6 +148,7 @@ public class TempOfferActivity extends AppCompatActivity {
                         // Call either setLocationBias() OR setLocationRestriction().
                         .setLocationBias(bounds)
                         //.setLocationRestriction(bounds)
+                        .setCountry("CA")
                         .setOrigin(new LatLng(-33.8749937,151.2041382))
                         .setSessionToken(token)
                         .setQuery(editable.toString())

@@ -50,14 +50,14 @@ public class NotificationActivity extends AppCompatActivity {
         NotificationAdapter recyclerviewAdapter = new NotificationAdapter(NotificationActivity.this, myList);
         recyclerView.setAdapter(recyclerviewAdapter);
 
-//        submit_btn = (Button) findViewById(R.id.submit);
-//        submit_btn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(TripInformationActivity.this, NotificationActivity.class);
-//                startActivity(intent);
-//            }
-//        });
+        submit_btn = (Button) findViewById(R.id.submit);
+        submit_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(NotificationActivity.this, TripInformationActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 

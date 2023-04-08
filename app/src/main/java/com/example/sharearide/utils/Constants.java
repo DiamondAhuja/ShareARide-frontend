@@ -7,4 +7,5 @@ public class Constants {
     public final static String URL = LOCAL_URL;
     public final static String LOGIN = "login/";
     public final static String REGISTER = "registeraccount/";
+    public final static String GETRIDEINFO = "getrideinfo/";
 }

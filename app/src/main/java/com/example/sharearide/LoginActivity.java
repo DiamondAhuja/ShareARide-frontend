@@ -13,6 +13,8 @@ import com.example.sharearide.utils.QueryServer;
 import com.example.sharearide.utils.ServerCallback;
 import com.google.android.material.button.MaterialButton;
 
+import org.json.JSONObject;
+
 public class LoginActivity extends AppCompatActivity implements ServerCallback {
     EditText etemail;
     EditText etpassword;
@@ -66,6 +68,8 @@ public class LoginActivity extends AppCompatActivity implements ServerCallback {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
         }
     }
+
+    public void onSuccess(JSONObject response) {}
 
     @Override
     public Context getContext() {

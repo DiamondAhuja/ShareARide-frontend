@@ -1,6 +1,9 @@
 package com.example.sharearide.utils;
 
+import static com.google.maps.android.Context.getApplicationContext;
+
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -9,6 +12,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -135,6 +139,35 @@ public class QueryServer {
 
             requestQueue.add(stringRequest);
         } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void getRideInfo(ServerCallback serverCallback, String rideId) {
+        String url = BASE_URL + Constants.GETRIDEINFO + "?RideId=" + rideId;
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(serverCallback.getContext());
+
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                    (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                serverCallback.onSuccess(response);
+                            } catch (JSONException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.e("VOLLEY", "Failed to retrieve ride information: " + error.getMessage());
+                        }
+                    });
+
+            requestQueue.add(jsonObjectRequest);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
