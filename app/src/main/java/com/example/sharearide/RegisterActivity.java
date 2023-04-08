@@ -3,14 +3,17 @@ package com.example.sharearide;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.sharearide.utils.Constants;
 import com.example.sharearide.utils.QueryServer;
 import com.example.sharearide.utils.ServerCallback;
+import com.google.gson.JsonObject;
 
 public class RegisterActivity extends AppCompatActivity implements ServerCallback {
 
@@ -57,7 +60,13 @@ public class RegisterActivity extends AppCompatActivity implements ServerCallbac
 
     private void configureButton(){
         Button registerButton = (Button) findViewById(R.id.regloginbtn);
-        registerButton.setOnClickListener(view -> finish());
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                finish();
+            }
+        });
     }
 
     private void registerPost(){
@@ -67,8 +76,22 @@ public class RegisterActivity extends AppCompatActivity implements ServerCallbac
     }
 
     @Override
-    public void onDone(String response) {
+    public void onDone(JsonObject response) {
+        if (response.get("Message").toString().replaceAll("\"","").equals("Registration successful!")) {
+            // Save users UID forever basically.
+            getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE)
+                    .edit()
+                    .putString("UID", response.get("UID").toString().replaceAll("\"",""))
+                    .apply();
+            loadMainActivity();
+        } else {
+            Toast.makeText(this, response.get("Message").toString().replaceAll("\"",""), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void loadMainActivity() {
         startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+        finish();
     }
 
     @Override
