@@ -35,6 +35,8 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.net.FetchPlaceRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.google.maps.DirectionsApiRequest;
 import com.google.maps.GeoApiContext;
 import com.google.maps.PendingResult;
@@ -42,10 +44,6 @@ import com.google.maps.internal.PolylineEncoding;
 import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.DirectionsRoute;
 import com.google.android.libraries.places.api.model.Place;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -95,22 +93,21 @@ public class TripInformationActivity extends AppCompatActivity implements OnMapR
         QueryServer.getRideInfo(this, rideid);
     }
 
-    public void onSuccess(JSONObject response) throws JSONException {
+    public void onDone(JsonObject response) {
         ETA = (TextView) findViewById(R.id.ETA);
         fare = (TextView) findViewById(R.id.fare);
         distance = (TextView) findViewById(R.id.distance);
-        ETA.setText("ETA: " + response.getString("ETA"));
-        fare.setText("Estimated Fare: $" + response.getString("fare"));
-        distance.setText("Total Distance: " + response.getString("distance"));
+        ETA.setText("ETA: " + response.get("ETA"));
+        fare.setText("Estimated Fare: $" + response.get("fare"));
+        distance.setText("Total Distance: " + response.get("distance"));
 
         ArrayList<String> id = new ArrayList<>();
-        id.add(response.getString("startlocation"));
-        JSONArray stringArrayJson = response.getJSONArray("stops");
-        for (int i = 0; i < stringArrayJson.length(); i++) {
-            String string = stringArrayJson.getString(i);
-            id.add(string);
+        id.add(response.get("startlocation").getAsString());
+        JsonArray stringArrayJson = response.getAsJsonArray("stops");
+        for (int i = 0; i < stringArrayJson.size(); i++) {
+            id.add(stringArrayJson.get(i).getAsString());
         }
-        id.add(response.getString("endlocation"));
+        id.add(response.get("endlocation").getAsString());
         retrievePlace(id);
     }
 
@@ -266,7 +263,6 @@ public class TripInformationActivity extends AppCompatActivity implements OnMapR
         });
     }
 
-    public void onDone(String response) {}
     public Context getContext() {
         return this;
     }

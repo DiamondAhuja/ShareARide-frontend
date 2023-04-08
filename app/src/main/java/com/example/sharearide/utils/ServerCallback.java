@@ -3,10 +3,9 @@ package com.example.sharearide.utils;
 import android.content.Context;
 
 import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.JsonObject;
 
 public interface ServerCallback {
-    void onDone(String response);
-    void onSuccess(JSONObject response) throws JSONException;
+    void onDone(JsonObject response);
     Context getContext();
 }
