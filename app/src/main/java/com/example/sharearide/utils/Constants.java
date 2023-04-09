@@ -10,5 +10,10 @@ public class Constants {
     public final static String LOGIN = "login/";
     public final static String REGISTER = "registeraccount/";
     public final static String GETRIDEINFO = "getrideinfo/";
+    public final static String GET_USER_INFO = "getuserinfo/";
+    public final static String EDIT_PROFILE = "editprofile/";
+
     public final static String PREFERENCES = "preferences";
+    public final static String DISCORD_TOKEN = "token";
+    public final static String UID = "uid";
 }

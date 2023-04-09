@@ -63,6 +63,39 @@ public class QueryServer {
         connectToServer(serverCallback, jsonBody.toString(), url);
     }
 
+    public static void getUserInfo(ServerCallback serverCallback, String UID) {
+        String url = BASE_URL + Constants.GET_USER_INFO;
+
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("UID", UID);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        connectToServer(serverCallback, jsonBody.toString(), url);
+    }
+
+    public static void updateUserInfo(ServerCallback serverCallback, String UID, String email, String firstname,
+                                String lastname, String phonenumber, String address) {
+        String url = BASE_URL + Constants.EDIT_PROFILE;
+
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("UID", UID);
+            jsonBody.put("firstName", firstname);
+            jsonBody.put("lastName", lastname);
+            jsonBody.put("phoneNumber", phonenumber);
+            jsonBody.put("address", address);
+            jsonBody.put("DiscordAuthToken", "");
+            jsonBody.put("email", email);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        connectToServer(serverCallback, jsonBody.toString(), url);
+    }
+
     private static void connectToServer(ServerCallback serverCallback, String requestBody, String url) {
         RequestQueue requestQueue = Volley.newRequestQueue(serverCallback.getContext());
 
@@ -112,8 +145,9 @@ public class QueryServer {
 
     }
 
+
     public static void getRideInfo(ServerCallback serverCallback, String rideId) {
-        String url = BASE_URL + Constants.GETRIDEINFO + "?RideId=" + rideId;
+        /*String url = BASE_URL + Constants.GETRIDEINFO + "?RideId=" + rideId;
         try {
             RequestQueue requestQueue = Volley.newRequestQueue(serverCallback.getContext());
 
@@ -138,6 +172,6 @@ public class QueryServer {
             requestQueue.add(jsonObjectRequest);
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 }

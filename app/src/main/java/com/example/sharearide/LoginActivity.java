@@ -32,7 +32,7 @@ public class LoginActivity extends AppCompatActivity implements ServerCallback {
 
         preferences = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
 
-        if (preferences.contains("UID")) {
+        if (preferences.contains(Constants.UID)) {
             loadMainActivity();
         }
 
@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity implements ServerCallback {
             // Save users UID forever basically.
             preferences
                     .edit()
-                    .putString("UID", response.get("UID").toString().replaceAll("\"",""))
+                    .putString(Constants.UID, response.get("UID").toString().replaceAll("\"",""))
                     .apply();
             loadMainActivity();
         } else {
