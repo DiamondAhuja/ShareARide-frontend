@@ -4,15 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
-import android.webkit.WebSettings;
 import android.webkit.WebStorage;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -37,13 +34,17 @@ public class ProfileActivity extends AppCompatActivity implements ServerCallback
 
     private SharedPreferences preferences;
 
+    RelativeLayout mainLayout;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
         preferences = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+        QueryServer.getUserInfo(this, preferences.getString(Constants.UID, null));
 
+        mainLayout = findViewById(R.id.rl_main);
         Button discordLogin = findViewById(R.id.btn_discord_login);
         Button discordLogout = findViewById(R.id.btn_discord_logout);
         LinearLayout linearLayoutDiscordTest = findViewById(R.id.ll_discord_test);
@@ -54,9 +55,6 @@ public class ProfileActivity extends AppCompatActivity implements ServerCallback
             linearLayoutDiscordTest.setVisibility(View.VISIBLE);
         }
 
-        Log.v("UID", preferences.getString(Constants.UID, null));
-        QueryServer.getUserInfo(this, preferences.getString(Constants.UID, null));
-
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
@@ -64,8 +62,6 @@ public class ProfileActivity extends AppCompatActivity implements ServerCallback
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("Profile Settings");
-
-        RelativeLayout relativeLayout = findViewById(R.id.rl_main);
 
         WebView webView = findViewById(R.id.discord_webview);
         webView.getSettings().setJavaScriptEnabled(true);
@@ -77,7 +73,7 @@ public class ProfileActivity extends AppCompatActivity implements ServerCallback
 
                 if (request.getUrl().toString().endsWith("/app")) {
                     view.setVisibility(View.GONE);
-                    relativeLayout.setVisibility(View.VISIBLE);
+                    mainLayout.setVisibility(View.VISIBLE);
                     view.loadUrl(JS_SNIPPET);
                     view.getSettings().setJavaScriptEnabled(false);
 
@@ -113,7 +109,7 @@ public class ProfileActivity extends AppCompatActivity implements ServerCallback
         discordLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                relativeLayout.setVisibility(View.GONE);
+                mainLayout.setVisibility(View.GONE);
                 webView.setVisibility(View.VISIBLE);
                 webView.loadUrl("https://discord.com/login");
             }
@@ -191,6 +187,8 @@ public class ProfileActivity extends AppCompatActivity implements ServerCallback
         phone.setText(response.get("phoneNumber").toString().replaceAll("\"", ""));
         address.setText(response.get("address").toString().replaceAll("\"", ""));
         dob.setText(response.get("DOB").toString().replaceAll("\"", ""));
+
+        mainLayout.setVisibility(View.VISIBLE);
     }
 
     @Override

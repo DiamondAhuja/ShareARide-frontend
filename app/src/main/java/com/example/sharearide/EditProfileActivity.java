@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.sharearide.utils.Constants;
 import com.example.sharearide.utils.QueryServer;
@@ -67,8 +68,12 @@ public class EditProfileActivity extends AppCompatActivity implements ServerCall
 
     @Override
     public void onDone(JsonObject response) {
-        startActivity(new Intent(EditProfileActivity.this, ProfileActivity.class));
-        finish();
+        if (response.get("Message").toString().replaceAll("\"","").equals("Profile updated!")) {
+            startActivity(new Intent(EditProfileActivity.this, ProfileActivity.class));
+            finish();
+        } else {
+            Toast.makeText(this, response.get("Message").toString().replaceAll("\"",""), Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
