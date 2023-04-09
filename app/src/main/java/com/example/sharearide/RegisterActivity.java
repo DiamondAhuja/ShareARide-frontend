@@ -83,7 +83,7 @@ public class RegisterActivity extends AppCompatActivity implements ServerCallbac
             // Save users UID forever basically.
             getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE)
                     .edit()
-                    .putString("UID", response.get("UID").toString().replaceAll("\"",""))
+                    .putString(Constants.UID, response.get("UID").toString().replaceAll("\"",""))
                     .apply();
             loadMainActivity();
         } else {
