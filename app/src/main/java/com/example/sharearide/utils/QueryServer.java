@@ -147,31 +147,15 @@ public class QueryServer {
 
 
     public static void getRideInfo(ServerCallback serverCallback, String rideId) {
-        /*String url = BASE_URL + Constants.GETRIDEINFO + "?RideId=" + rideId;
+        String url = BASE_URL + Constants.GETRIDEINFO;
+
+        JSONObject jsonBody = new JSONObject();
         try {
-            RequestQueue requestQueue = Volley.newRequestQueue(serverCallback.getContext());
+            jsonBody.put("RideID", rideId);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
 
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                    (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            try {
-                                serverCallback.onSuccess(response);
-                            } catch (JSONException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                    }, new Response.ErrorListener() {
-
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Log.e("VOLLEY", "Failed to retrieve ride information: " + error.getMessage());
-                        }
-                    });
-
-            requestQueue.add(jsonObjectRequest);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
+        connectToServer(serverCallback, jsonBody.toString(), url);
     }
 }

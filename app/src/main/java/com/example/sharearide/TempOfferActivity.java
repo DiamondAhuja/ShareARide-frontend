@@ -34,18 +34,11 @@ public class TempOfferActivity extends AppCompatActivity {
     private Button submit_btn;
     private EditText departure, destination;
     private RecyclerView departure_list, destination_list;
+    private String apiKey;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.temp_offer_page);
-
-        String apiKey = "AIzaSyCvOEcPKVyfbtE0WOA9ZD1R0X13gK9PNLc";
-        // Initialize the SDK
-        if (!Places.isInitialized()) {
-            Places.initialize(getApplicationContext(), apiKey);
-        }
-        // Create a new PlacesClient instance
-        PlacesClient placesClient = Places.createClient(this);
 
         // set toolbar format
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
@@ -53,6 +46,14 @@ public class TempOfferActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("");
+
+        apiKey = getResources().getString(R.string.apiKey);
+        // Initialize the SDK
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), apiKey);
+        }
+        // Create a new PlacesClient instance
+        PlacesClient placesClient = Places.createClient(this);
 
         departure = (EditText) findViewById(R.id.departure);
         departure_list = (RecyclerView) findViewById(R.id.departure_list);
@@ -66,14 +67,10 @@ public class TempOfferActivity extends AppCompatActivity {
 
         departure.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
             @Override
             public void afterTextChanged(Editable editable) {
@@ -110,7 +107,6 @@ public class TempOfferActivity extends AppCompatActivity {
             }
         });
 
-
         departure.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -121,17 +117,12 @@ public class TempOfferActivity extends AppCompatActivity {
             }
         });
 
-
         destination.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
             @Override
             public void afterTextChanged(Editable editable) {
@@ -193,7 +184,6 @@ public class TempOfferActivity extends AppCompatActivity {
         });
 
     }
-
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

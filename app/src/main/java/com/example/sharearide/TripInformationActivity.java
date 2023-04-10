@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -28,7 +29,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -47,17 +47,21 @@ import com.google.android.libraries.places.api.model.Place;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TripInformationActivity extends AppCompatActivity implements OnMapReadyCallback, ServerCallback {
     private GoogleMap mMap;
-    private String apiKey = "AIzaSyCvOEcPKVyfbtE0WOA9ZD1R0X13gK9PNLc";
+    private String apiKey;
     private GeoApiContext mGeoApiContext = null;
     private Button submit;
     private TextView departure, destination, stops, ETA, fare, distance;
-    private ArrayList<Place> stops_list = new ArrayList<>();
     private Place origin, end;
-    private String rideid = "QEjZ3sHZ7G1krqy7mgFM";
+    private String eta_text, fare_text, distance_text;
+    private ArrayList<String> placeId = new ArrayList<>();
+    private Map<String, Place> placeMap = new LinkedHashMap<>();
+    private String rideId = "6jIo8cQf0C3wm569PvOj";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,18 +79,18 @@ public class TripInformationActivity extends AppCompatActivity implements OnMapR
         }
 
         submit = (Button) findViewById(R.id.submit);
-        ArrayList<String> id = new ArrayList<>();
-        id.add("ChIJwSr3RKyELIgRHAFDYeoAnjk");
-        id.add("ChIJHfVL0gw5K4gRvKTcAQhsK6w");
-        id.add("ChIJmzrzi9Y0K4gRgXUc3sTY7RU");
-        retrievePlace(id);
 
-        ETA = (TextView) findViewById(R.id.ETA);
-        fare = (TextView) findViewById(R.id.fare);
-        distance = (TextView) findViewById(R.id.distance);
-        ETA.setText("ETA: " + "22:00PM");
-        fare.setText("Estimated Fare: $" + "$50");
-        distance.setText("Total Distance: " + "100km");
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(TripInformationActivity.this, RatingActivity.class);
+                startActivity(intent);
+            }
+        });
+//        id.add("ChIJwSr3RKyELIgRHAFDYeoAnjk"); // mcmaster
+//        id.add("ChIJHfVL0gw5K4gRvKTcAQhsK6w"); // terminal
+//        id.add("ChIJmzrzi9Y0K4gRgXUc3sTY7RU"); // cn tower
+        getRideInfo(rideId);
     }
 
     private void getRideInfo(String rideid) {
@@ -94,24 +98,21 @@ public class TripInformationActivity extends AppCompatActivity implements OnMapR
     }
 
     public void onDone(JsonObject response) {
-        ETA = (TextView) findViewById(R.id.ETA);
-        fare = (TextView) findViewById(R.id.fare);
-        distance = (TextView) findViewById(R.id.distance);
-        ETA.setText("ETA: " + response.get("ETA"));
-        fare.setText("Estimated Fare: $" + response.get("fare"));
-        distance.setText("Total Distance: " + response.get("distance"));
+        eta_text = response.get("ETA").getAsString();
+        fare_text = response.get("fare").getAsString();
+        distance_text = response.get("distance").getAsString() + " km";
 
-        ArrayList<String> id = new ArrayList<>();
-        id.add(response.get("startlocation").getAsString());
+        placeId.add(response.get("startlocationid").getAsString());
         JsonArray stringArrayJson = response.getAsJsonArray("stops");
         for (int i = 0; i < stringArrayJson.size(); i++) {
-            id.add(stringArrayJson.get(i).getAsString());
+            placeId.add(stringArrayJson.get(i).getAsString());
         }
-        id.add(response.get("endlocation").getAsString());
-        retrievePlace(id);
+        placeId.add(response.get("endlocationid").getAsString());
+        retrievePlace(placeId);
     }
 
     private void retrievePlace(ArrayList<String> placeId) {
+        apiKey = getResources().getString(R.string.apiKey);
         if (!Places.isInitialized()) {
             Places.initialize(getApplicationContext(), apiKey);
         }
@@ -123,10 +124,10 @@ public class TripInformationActivity extends AppCompatActivity implements OnMapR
 
             placesClient.fetchPlace(request).addOnSuccessListener((response) -> {
                 Place place = response.getPlace();
-                stops_list.add(place);
+                placeMap.put(id, place);
                 Log.d(TAG, "Place found: " + place.getName());
 
-                if (stops_list.size() == placeId.size()) {
+                if (placeMap.size() == placeId.size()) {
                     // Obtain the SupportMapFragment and get notified when the map is ready to be used.
                     SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                             .findFragmentById(R.id.map);
@@ -147,39 +148,55 @@ public class TripInformationActivity extends AppCompatActivity implements OnMapR
         }
     }
 
-    private void setText() {
-        departure = (TextView) findViewById(R.id.departure);
-        destination = (TextView) findViewById(R.id.destination);
-        stops = (TextView) findViewById(R.id.stops);
-
-        departure.setText("Departure: " + origin.getName());
-        destination.setText("Destination: " + end.getName());
-        String text = "Stops: ";
-        for (int i = 0; i < stops_list.size(); i++) {
-            if (i == stops_list.size() - 1) {
-                text += stops_list.get(i).getName();
-                break;
-            }
-            text += stops_list.get(i).getName() + " - ";
-        }
-        stops.setText("Stops: " + text);
-    }
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        for (Place place : stops_list) {
+        for (Place place : placeMap.values()) {
             mMap.addMarker(new MarkerOptions()
                     .position(place.getLatLng())
                     .title(place.getName()));
         }
-        origin = stops_list.get(0);
-        end = stops_list.get(stops_list.size() - 1);
 
+        origin = placeMap.get(placeId.get(0));
+        end = placeMap.get(placeId.get(placeId.size() - 1));
+
+        setText();
+        setBound();
+
+        for (int i = 0; i < placeId.size() - 1; i++) {
+            calculateDirections(placeMap.get(placeId.get(i)).getLatLng(),
+                    placeMap.get(placeId.get(i+1)).getLatLng());
+        }
+    }
+
+    private void setText() {
+        departure = (TextView) findViewById(R.id.departure);
+        destination = (TextView) findViewById(R.id.destination);
+        stops = (TextView) findViewById(R.id.stops);
+        ETA = (TextView) findViewById(R.id.ETA);
+        fare = (TextView) findViewById(R.id.fare);
+        distance = (TextView) findViewById(R.id.distance);
+
+        departure.setText("Departure: " + origin.getName());
+        destination.setText("Destination: " + end.getName());
+        ETA.setText("ETA: " + eta_text);
+        fare.setText("Estimated Fare: $" + fare_text);
+        distance.setText("Total Distance: " + distance_text);
+        String stops_text = "Stops: ";
+        for (int i = 0; i < placeId.size(); i++) {
+            if (i == placeId.size() - 1) {
+                stops_text += placeMap.get(placeId.get(i)).getName();
+                break;
+            }
+            stops_text += placeMap.get(placeId.get(i)).getName() + " - ";
+        }
+        stops.setText("Stops: " + stops_text);
+    }
+
+    private void setBound() {
         CameraUpdate initialLocation = CameraUpdateFactory.newLatLngZoom(origin.getLatLng(), 10);
         mMap.moveCamera(initialLocation);
-        setText();
 
         // Calculate the bounds of the route and zoom in to fit the bounds
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
@@ -188,10 +205,6 @@ public class TripInformationActivity extends AppCompatActivity implements OnMapR
         LatLngBounds bounds = builder.build();
         CameraUpdate routeZoom = CameraUpdateFactory.newLatLngBounds(bounds, 120);
         mMap.animateCamera(routeZoom, 600, null);
-        for (int i = 0; i < stops_list.size() - 1; i++) {
-            Log.d(TAG, "current route:"+ stops_list.get(i).getName() + "to" + stops_list.get(i+1).getName());
-            calculateDirections(stops_list.get(i).getLatLng(), stops_list.get(i+1).getLatLng());
-        }
     }
 
     private void addPolylinesToMap(final DirectionsResult result) {

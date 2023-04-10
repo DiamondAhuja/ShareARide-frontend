@@ -31,9 +31,7 @@ public class RequestActivity extends AppCompatActivity {
 
     private EditText departure, destination;
     private RecyclerView departure_list, destination_list;
-//    Button LocationBtn;
-//    TextView AddressText;
-//    private LocationRequest locationRequest;
+    private String apiKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +45,7 @@ public class RequestActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("Find your Carpool");
 
-        String apiKey = "AIzaSyCvOEcPKVyfbtE0WOA9ZD1R0X13gK9PNLc";
+        apiKey = getResources().getString(R.string.apiKey);
         // Initialize the SDK
         if (!Places.isInitialized()) {
             Places.initialize(getApplicationContext(), apiKey);
@@ -67,14 +65,10 @@ public class RequestActivity extends AppCompatActivity {
 
         departure.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
             @Override
             public void afterTextChanged(Editable editable) {
@@ -125,14 +119,10 @@ public class RequestActivity extends AppCompatActivity {
 
         destination.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
             @Override
             public void afterTextChanged(Editable editable) {
@@ -149,6 +139,7 @@ public class RequestActivity extends AppCompatActivity {
                         // Call either setLocationBias() OR setLocationRestriction().
                         .setLocationBias(bounds)
                         //.setLocationRestriction(bounds)
+                        .setCountry("CA")
                         .setOrigin(new LatLng(-33.8749937,151.2041382))
                         .setSessionToken(token)
                         .setQuery(editable.toString())
@@ -178,22 +169,6 @@ public class RequestActivity extends AppCompatActivity {
             }
         });
 
-//        AddressText = (TextView) findViewById(R.id.address_text);
-//        LocationBtn = (Button) findViewById(R.id.location_btn);
-
-//        locationRequest = LocationRequest.create();
-//        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-//        locationRequest.setInterval(5000);
-//        locationRequest.setFastestInterval(2000);
-
-//        LocationBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                getCurrentLocation();
-//            }
-//        });
-
         AutoCompleteTextView exposedDropdown_1 = findViewById(R.id.trip_type);
         String[] items_1 = new String[]{"Temporary", "Recurring"};
         ArrayAdapter<String> adapter_1 = new ArrayAdapter<>(this, R.layout.dropdown_item, items_1);
@@ -204,129 +179,6 @@ public class RequestActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter_2 = new ArrayAdapter<>(this, R.layout.dropdown_item, items_2);
         exposedDropdown_2.setAdapter(adapter_2);
     }
-
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//
-//        if (requestCode == 1){
-//            if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
-//
-//                if (isGPSEnabled()) {
-//
-//                    getCurrentLocation();
-//
-//                }else {
-//
-//                    turnOnGPS();
-//                }
-//            }
-//        }
-//
-//
-//    }
-//
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        if (requestCode == 2) {
-//            if (resultCode == Activity.RESULT_OK) {
-//
-//                getCurrentLocation();
-//            }
-//        }
-//    }
-//
-//    private void getCurrentLocation() {
-//
-//
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            if (ActivityCompat.checkSelfPermission(RequestActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-//
-//                if (isGPSEnabled()) {
-//
-//                    LocationServices.getFusedLocationProviderClient(RequestActivity.this)
-//                            .requestLocationUpdates(locationRequest, new LocationCallback() {
-//                                @Override
-//                                public void onLocationResult(@NonNull LocationResult locationResult) {
-//                                    super.onLocationResult(locationResult);
-//
-//                                    LocationServices.getFusedLocationProviderClient(RequestActivity.this)
-//                                            .removeLocationUpdates(this);
-//
-//                                    if (locationResult != null && locationResult.getLocations().size() >0){
-//
-//                                        int index = locationResult.getLocations().size() - 1;
-//                                        double latitude = locationResult.getLocations().get(index).getLatitude();
-//                                        double longitude = locationResult.getLocations().get(index).getLongitude();
-//
-//                                        AddressText.setText("Latitude: "+ latitude + "\n" + "Longitude: "+ longitude);
-//                                    }
-//                                }
-//                            }, Looper.getMainLooper());
-//
-//                } else {
-//                    turnOnGPS();
-//                }
-//
-//            } else {
-//                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-//            }
-//        }
-//    }
-//
-//    private void turnOnGPS() {
-//
-//        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
-//                .addLocationRequest(locationRequest);
-//        builder.setAlwaysShow(true);
-//
-//        Task<LocationSettingsResponse> result = LocationServices.getSettingsClient(getApplicationContext())
-//                .checkLocationSettings(builder.build());
-//
-//        result.addOnCompleteListener(new OnCompleteListener<LocationSettingsResponse>() {
-//            @Override
-//            public void onComplete(@NonNull Task<LocationSettingsResponse> task) {
-//
-//                try {
-//                    LocationSettingsResponse response = task.getResult(ApiException.class);
-//                    Toast.makeText(RequestActivity.this, "GPS is already tured on", Toast.LENGTH_SHORT).show();
-//
-//                } catch (ApiException e) {
-//
-//                    switch (e.getStatusCode()) {
-//                        case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-//
-//                            try {
-//                                ResolvableApiException resolvableApiException = (ResolvableApiException) e;
-//                                resolvableApiException.startResolutionForResult(RequestActivity.this, 2);
-//                            } catch (IntentSender.SendIntentException ex) {
-//                                ex.printStackTrace();
-//                            }
-//                            break;
-//
-//                        case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-//                            //Device does not have location
-//                            break;
-//                    }
-//                }
-//            }
-//        });
-//
-//    }
-//
-//    private boolean isGPSEnabled() {
-//        LocationManager locationManager = null;
-//        boolean isEnabled = false;
-//
-//        if (locationManager == null) {
-//            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-//        }
-//
-//        isEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-//        return isEnabled;
-//    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
