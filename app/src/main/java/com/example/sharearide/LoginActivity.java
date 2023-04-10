@@ -2,26 +2,39 @@ package com.example.sharearide;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.sharearide.utils.Constants;
 import com.example.sharearide.utils.QueryServer;
 import com.example.sharearide.utils.ServerCallback;
 import com.google.android.material.button.MaterialButton;
+import com.google.gson.JsonObject;
+
 
 public class LoginActivity extends AppCompatActivity implements ServerCallback {
     EditText etemail;
     EditText etpassword;
     MaterialButton login;
 
+    SharedPreferences preferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        preferences = getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+
+        if (preferences.contains(Constants.UID)) {
+            loadMainActivity();
+        }
 
         etemail = findViewById(R.id.loginemail);
         etpassword = findViewById(R.id.loginpassword);
@@ -38,9 +51,16 @@ public class LoginActivity extends AppCompatActivity implements ServerCallback {
         configureRegisterButton();
     }
 
-    private void configureRegisterButton(){
+    private void configureRegisterButton() {
         Button loginButton = (Button) findViewById(R.id.switchregister);
-        loginButton.setOnClickListener(view -> startActivity(new Intent(LoginActivity.this, RegisterActivity.class)));
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+                finish();
+            }
+        });
+
     }
 
     private void loginPost(String email, String password){
@@ -48,23 +68,22 @@ public class LoginActivity extends AppCompatActivity implements ServerCallback {
     }
 
     @Override
-    public void onDone(String response) {
-        if (!response.contains("{\"Message\":")) {
-            if (response.equals("Login failed The password is invalid or the user does not have a password.")) {
-                Toast.makeText(this, response, Toast.LENGTH_LONG).show();
-                etpassword.setText("");
-            }
-            else if(response.equals("Login failed The email address is badly formatted.")){
-                Toast.makeText(this, response, Toast.LENGTH_LONG).show();
-                etemail.setText("");
-            }
-            else{
-                Toast.makeText(this, "Email or password not recognized please try again", Toast.LENGTH_LONG).show();
-            }
+    public void onDone(JsonObject response) {
+        if (response.get("Message").toString().replaceAll("\"","").equals("Login successful!")) {
+            // Save users UID forever basically.
+            preferences
+                    .edit()
+                    .putString(Constants.UID, response.get("UID").toString().replaceAll("\"",""))
+                    .apply();
+            loadMainActivity();
+        } else {
+            Toast.makeText(this, response.get("Message").toString().replaceAll("\"",""), Toast.LENGTH_LONG).show();
         }
-        else{
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-        }
+    }
+
+    public void loadMainActivity() {
+        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        finish();
     }
 
     @Override

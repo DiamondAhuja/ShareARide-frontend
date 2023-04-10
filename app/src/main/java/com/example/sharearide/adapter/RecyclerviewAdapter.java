@@ -1,21 +1,22 @@
-package com.example.sharearide;
+package com.example.sharearide.adapter;
+
+import static android.content.ContentValues.TAG;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.sharearide.R;
 import com.google.android.libraries.places.api.model.AutocompletePrediction;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.List;
 
 public class RecyclerviewAdapter extends RecyclerView.Adapter<RecyclerviewAdapter.ViewHolder> {
@@ -45,6 +46,7 @@ public class RecyclerviewAdapter extends RecyclerView.Adapter<RecyclerviewAdapte
             @Override
             public void onClick(View v) {
                 mEditText.setText(item.getPrimaryText(null));
+//                Log.d(TAG, item.getPlaceId());
             }
         });
     }
