@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">ShareARide</string>
     <string name="apiKey">AIzaSyCvOEcPKVyfbtE0WOA9ZD1R0X13gK9PNLc</string>
+
+    <string-array name="ratingSelect">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
 </resources>

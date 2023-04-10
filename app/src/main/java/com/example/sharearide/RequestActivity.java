@@ -2,7 +2,9 @@ package com.example.sharearide;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Debug;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -11,6 +13,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +23,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sharearide.adapter.RecyclerviewAdapter;
+import com.example.sharearide.utils.Constants;
+import com.example.sharearide.utils.QueryServer;
+import com.example.sharearide.utils.ServerCallback;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
@@ -26,12 +33,20 @@ import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
 import com.google.android.libraries.places.api.model.RectangularBounds;
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.material.button.MaterialButton;
+import com.google.gson.JsonObject;
 
-public class RequestActivity extends AppCompatActivity {
+public class RequestActivity extends AppCompatActivity implements ServerCallback {
 
     private EditText departure, destination;
     private RecyclerView departure_list, destination_list;
     private String apiKey;
+
+    MaterialButton search;
+    EditText dep;
+    EditText dest;
+    Spinner rating;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,10 +189,25 @@ public class RequestActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter_1 = new ArrayAdapter<>(this, R.layout.dropdown_item, items_1);
         exposedDropdown_1.setAdapter(adapter_1);
 
+
         AutoCompleteTextView exposedDropdown_2 = findViewById(R.id.rating);
         String[] items_2= new String[]{"0 Star", "1 Star", "2 Star", "3 Star", "4 Star"};
         ArrayAdapter<String> adapter_2 = new ArrayAdapter<>(this, R.layout.dropdown_item, items_2);
         exposedDropdown_2.setAdapter(adapter_2);
+
+        searched();
+    }
+
+    private void searched(){
+        search = findViewById(R.id.searchButt);
+        dep = findViewById(R.id.departure);
+        dest = findViewById(R.id.destination);
+        //rating = findViewById(R.id.ratingSelect);
+
+        search.setOnClickListener(view -> {
+            //requestRide(Constants.UID, dep.getText().toString(), dest.getText().toString(), "1", "2");
+            //Log.d("A", rating.getSelectedItem().toString());
+        });
     }
 
     @Override
@@ -186,5 +216,19 @@ public class RequestActivity extends AppCompatActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void requestRide(String uID, String startLocation, String endLocation, String minRating, String maxRiders){
+        QueryServer.requestRide(this, uID, startLocation, endLocation, minRating, maxRiders);
+    }
+
+    @Override
+    public void onDone(JsonObject response) {
+
+    }
+
+    @Override
+    public Context getContext() {
+        return null;
     }
 }

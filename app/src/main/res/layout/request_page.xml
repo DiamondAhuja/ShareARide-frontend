@@ -182,11 +182,14 @@
                     style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:id="@+id/searchButt"
                     android:backgroundTint="@color/purple_200"
                     android:drawableTop="@drawable/ic_searching"
                     android:padding="9dp"
                     app:cornerRadius="28dp"
                     android:layout_weight="0" />
+
+
             </LinearLayout>
 
         </FrameLayout>
