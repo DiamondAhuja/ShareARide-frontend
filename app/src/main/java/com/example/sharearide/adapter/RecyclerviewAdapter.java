@@ -13,22 +13,27 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sharearide.R;
+import com.example.sharearide.RequestActivity;
 import com.google.android.libraries.places.api.model.AutocompletePrediction;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecyclerviewAdapter extends RecyclerView.Adapter<RecyclerviewAdapter.ViewHolder> {
     List<AutocompletePrediction> list;
     private LayoutInflater mInflater;
     private EditText mEditText;
+    public String startId;
+    public String endId;
+    public ArrayList<String> aList;
 
-
-    public RecyclerviewAdapter(Context context, EditText editText, List<AutocompletePrediction> list) {
+    public RecyclerviewAdapter(Context context, EditText editText, List<AutocompletePrediction> list, ArrayList<String> aList) {
         mInflater = LayoutInflater.from(context);
         this.list = list;
         mEditText = editText;
+        this.aList = aList;
     }
 
     @androidx.annotation.NonNull
@@ -46,9 +51,15 @@ public class RecyclerviewAdapter extends RecyclerView.Adapter<RecyclerviewAdapte
             @Override
             public void onClick(View v) {
                 mEditText.setText(item.getPrimaryText(null));
-//                Log.d(TAG, item.getPlaceId());
+                Log.d(TAG, item.getPlaceId());
+                aList.add(item.getPlaceId());
+                Log.d(TAG, aList.toString());
             }
         });
+    }
+
+    public ArrayList<String> getList(){
+        return aList;
     }
 
     @Override

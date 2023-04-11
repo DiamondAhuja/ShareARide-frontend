@@ -16,6 +16,7 @@ public class Constants {
     public final static String START_RIDE = "startride/";
     public final static String FINISH_RIDE = "finishride/";
     public final static String RATE_USER = "rateuser/";
+    public final static String REQUEST_RIDE = "requestcarpool/";
 
     public final static String PREFERENCES = "preferences";
     public final static String DISCORD_TOKEN = "token";

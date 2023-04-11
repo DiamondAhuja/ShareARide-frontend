@@ -35,6 +35,7 @@ import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRe
 import com.google.android.libraries.places.api.net.PlacesClient;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -44,6 +45,7 @@ public class RecurOfferActivity extends AppCompatActivity {
     private TextView date_time_button;
     private EditText departure, destination;
     private RecyclerView departure_list, destination_list;
+    ArrayList<String> aList = new ArrayList<>();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,7 +108,7 @@ public class RecurOfferActivity extends AppCompatActivity {
                         .build();
 
                 placesClient.findAutocompletePredictions(request).addOnSuccessListener((response) -> {
-                    RecyclerviewAdapter recyclerviewAdapter = new RecyclerviewAdapter(RecurOfferActivity.this, departure, response.getAutocompletePredictions());
+                    RecyclerviewAdapter recyclerviewAdapter = new RecyclerviewAdapter(RecurOfferActivity.this, departure, response.getAutocompletePredictions(), aList);
                     departure_list.setAdapter(recyclerviewAdapter);
                     departure_list.setVisibility(View.VISIBLE);
                 }).addOnFailureListener((exception) -> {
@@ -164,7 +166,7 @@ public class RecurOfferActivity extends AppCompatActivity {
 
                 placesClient.findAutocompletePredictions(request).addOnSuccessListener((response) -> {
                     destination_list.setVisibility(View.VISIBLE);
-                    RecyclerviewAdapter recyclerviewAdapter = new RecyclerviewAdapter(RecurOfferActivity.this, destination, response.getAutocompletePredictions());
+                    RecyclerviewAdapter recyclerviewAdapter = new RecyclerviewAdapter(RecurOfferActivity.this, destination, response.getAutocompletePredictions(), aList);
                     destination_list.setAdapter(recyclerviewAdapter);
                 }).addOnFailureListener((exception) -> {
                     if (exception instanceof ApiException) {
