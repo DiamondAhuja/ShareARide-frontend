@@ -1,5 +1,6 @@
 package com.example.sharearide;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -7,7 +8,6 @@ import android.graphics.Paint;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -21,6 +21,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.sharearide.utils.QueryServer;
+import com.example.sharearide.utils.ServerCallback;
+import com.google.gson.JsonObject;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.MultiFormatReader;
@@ -30,18 +33,19 @@ import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.journeyapps.barcodescanner.CaptureActivity;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.EnumMap;
 import java.util.Map;
 
-public class ScanQRCodeActivity extends AppCompatActivity {
+public class ScanQRCodeActivity extends AppCompatActivity implements ServerCallback {
 
     private Button scan_btn, submit_btn;
     private TextView textview, image_picker;
     private ImageView qr_code;
+    private boolean isValid = false;
+    private String taxiId;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +61,6 @@ public class ScanQRCodeActivity extends AppCompatActivity {
 
         // initialize
         scan_btn = (Button) findViewById(R.id.btn_scan);
-        textview = (TextView) findViewById(R.id.textView);
         image_picker = (TextView) findViewById(R.id.image_picker);
         qr_code = (ImageView) findViewById(R.id.qr_code);
         submit_btn = (Button) findViewById(R.id.submit);
@@ -82,8 +85,11 @@ public class ScanQRCodeActivity extends AppCompatActivity {
         submit_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ScanQRCodeActivity.this, TempOfferActivity.class);
-                startActivity(intent);
+                if (isValid) {
+                    Intent intent = new Intent(ScanQRCodeActivity.this, TempOfferActivity.class);
+                    intent.putExtra("taxiId", taxiId);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -118,11 +124,31 @@ public class ScanQRCodeActivity extends AppCompatActivity {
         if (result != null) {
             String contents = result.getContents();
             if (contents != null) {
-                textview.setText(result.getContents());
+                getScanQRCode(result.getContents());
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    private void getScanQRCode(String qrcode) {
+        QueryServer.scanQRCode(this, qrcode);
+    }
+
+    public void onDone(JsonObject response) {
+        textview = (TextView) findViewById(R.id.textView);
+        String taxistatus = response.get("taxistatus").getAsString();
+        if (taxistatus.equals("available")) {
+            textview.setText("The taxi is available");
+            isValid = true;
+        } else if (taxistatus.equals("in use")){
+            textview.setText("The taxi is in use, find another taxi");
+            isValid = false;
+        }
+    }
+
+    public Context getContext() {
+        return this;
     }
 
     private class LoadImageTask extends AsyncTask<Uri, Void, Bitmap> {
@@ -170,7 +196,8 @@ public class ScanQRCodeActivity extends AppCompatActivity {
             Result result = reader.decode(binaryBitmap);
             String qrCodeContent = result.getText();
             // handle the content right here
-            textview.setText(qrCodeContent);
+            taxiId = qrCodeContent;
+            getScanQRCode(qrCodeContent);
         } catch (ReaderException e) {
             // Handle the error here
             // ...

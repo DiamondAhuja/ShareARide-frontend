@@ -145,13 +145,67 @@ public class QueryServer {
 
     }
 
-
     public static void getRideInfo(ServerCallback serverCallback, String rideId) {
         String url = BASE_URL + Constants.GETRIDEINFO;
 
         JSONObject jsonBody = new JSONObject();
         try {
             jsonBody.put("RideID", rideId);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        connectToServer(serverCallback, jsonBody.toString(), url);
+    }
+
+    public static void scanQRCode(ServerCallback serverCallback, String qrcode) {
+        String url = BASE_URL + Constants.SCANQRCODE;
+
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("qrcode", qrcode);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        connectToServer(serverCallback, jsonBody.toString(), url);
+    }
+
+    public static void startRide(ServerCallback serverCallback, String rideId, String cuid) {
+        String url = BASE_URL + Constants.START_RIDE;
+
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("RideID", rideId);
+            jsonBody.put("CUID", cuid);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        connectToServer(serverCallback, jsonBody.toString(), url);
+    }
+
+    public static void finishRide(ServerCallback serverCallback, String rideId, String cuid) {
+        String url = BASE_URL + Constants.FINISH_RIDE;
+
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("RideID", rideId);
+            jsonBody.put("CUID", cuid);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        connectToServer(serverCallback, jsonBody.toString(), url);
+    }
+
+    public static void rateUser(ServerCallback serverCallback, String cuid, String rating) {
+        String url = BASE_URL + Constants.RATE_USER;
+
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("UID", cuid);
+            jsonBody.put("rating", rating);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
