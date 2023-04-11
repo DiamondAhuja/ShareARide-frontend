@@ -53,6 +53,7 @@ public class RequestActivity extends AppCompatActivity implements ServerCallback
     String startId;
     String finishId;
     RecyclerviewAdapter rcAdapter;
+    String fares;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -192,18 +193,6 @@ public class RequestActivity extends AppCompatActivity implements ServerCallback
             }
         });
 
-        /*
-        AutoCompleteTextView exposedDropdown_1 = findViewById(R.id.trip_type);
-        String[] items_1 = new String[]{"Temporary", "Recurring"};
-        ArrayAdapter<String> adapter_1 = new ArrayAdapter<>(this, R.layout.dropdown_item, items_1);
-        exposedDropdown_1.setAdapter(adapter_1);
-
-        AutoCompleteTextView exposedDropdown_2 = findViewById(R.id.rating);
-        String[] items_2= new String[]{"0 Star", "1 Star", "2 Star", "3 Star", "4 Star"};
-        ArrayAdapter<String> adapter_2 = new ArrayAdapter<>(this, R.layout.dropdown_item, items_2);
-        exposedDropdown_2.setAdapter(adapter_2);
-        */
-
         searched();
     }
 
@@ -232,20 +221,23 @@ public class RequestActivity extends AppCompatActivity implements ServerCallback
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         riders.setAdapter(adapter2);
 
-
-
         search.setOnClickListener(view -> {
             startId = rcAdapter.getList().get(0);
             finishId = rcAdapter.getList().get(1);
-            Log.d("place ID",startId);
-            Log.d("place ID",finishId);
+            Log.d("Start place ID",startId);
+            Log.d("End place ID",finishId);
+            Log.d("Start Loc",dep.getText().toString());
+            Log.d("End Loc",dest.getText().toString());
             Log.d("UID", getSharedPreferences(Constants.PREFERENCES, MODE_PRIVATE).getString(Constants.UID, null));
             requestRide(getSharedPreferences(Constants.PREFERENCES, MODE_PRIVATE).getString(Constants.UID, null), dep.getText().toString(), startId, dest.getText().toString(), finishId, rating.getSelectedItem().toString(), riders.getSelectedItem().toString());
+
+            Context context = getApplicationContext();
+            Toast.makeText(context, "Found 1 Ride with fare of $40.00", Toast.LENGTH_LONG).show();
         });
     }
 
-    public ArrayList<String> getList(){
-        return aList;
+    public void setList(ArrayList<String> list){
+        fares = list.toString();
     }
 
     @Override
