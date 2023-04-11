@@ -61,11 +61,14 @@ public class TripInformationActivity extends AppCompatActivity implements OnMapR
     private String eta_text, fare_text, distance_text;
     private ArrayList<String> placeId = new ArrayList<>();
     private Map<String, Place> placeMap = new LinkedHashMap<>();
-    private String rideId = "6jIo8cQf0C3wm569PvOj";
+    private String rideId;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tripinfo_page);
+
+        Intent intent = getIntent();
+        rideId = intent.getStringExtra("rideId");
 
         // set toolbar format
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
@@ -84,6 +87,7 @@ public class TripInformationActivity extends AppCompatActivity implements OnMapR
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(TripInformationActivity.this, RatingActivity.class);
+                intent.putExtra("rideId", rideId);
                 startActivity(intent);
             }
         });
@@ -191,7 +195,7 @@ public class TripInformationActivity extends AppCompatActivity implements OnMapR
             }
             stops_text += placeMap.get(placeId.get(i)).getName() + " - ";
         }
-        stops.setText("Stops: " + stops_text);
+        stops.setText(stops_text);
     }
 
     private void setBound() {
