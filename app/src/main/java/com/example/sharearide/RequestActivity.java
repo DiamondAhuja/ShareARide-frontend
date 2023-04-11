@@ -36,6 +36,8 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.button.MaterialButton;
 import com.google.gson.JsonObject;
 
+import java.util.ArrayList;
+
 public class RequestActivity extends AppCompatActivity implements ServerCallback {
 
     private EditText departure, destination;
@@ -46,7 +48,11 @@ public class RequestActivity extends AppCompatActivity implements ServerCallback
     EditText dep;
     EditText dest;
     Spinner rating;
-
+    Spinner riders;
+    ArrayList<String> aList = new ArrayList<>();
+    String startId;
+    String finishId;
+    RecyclerviewAdapter rcAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +113,8 @@ public class RequestActivity extends AppCompatActivity implements ServerCallback
                         .build();
 
                 placesClient.findAutocompletePredictions(request).addOnSuccessListener((response) -> {
-                    RecyclerviewAdapter recyclerviewAdapter = new RecyclerviewAdapter(RequestActivity.this, departure, response.getAutocompletePredictions());
+                    RecyclerviewAdapter recyclerviewAdapter = new RecyclerviewAdapter(RequestActivity.this, departure, response.getAutocompletePredictions(), aList);
+                    rcAdapter = recyclerviewAdapter;
                     departure_list.setAdapter(recyclerviewAdapter);
                     departure_list.setVisibility(View.VISIBLE);
                 }).addOnFailureListener((exception) -> {
@@ -162,7 +169,8 @@ public class RequestActivity extends AppCompatActivity implements ServerCallback
 
                 placesClient.findAutocompletePredictions(request).addOnSuccessListener((response) -> {
                     destination_list.setVisibility(View.VISIBLE);
-                    RecyclerviewAdapter recyclerviewAdapter = new RecyclerviewAdapter(RequestActivity.this, destination, response.getAutocompletePredictions());
+                    RecyclerviewAdapter recyclerviewAdapter = new RecyclerviewAdapter(RequestActivity.this, destination, response.getAutocompletePredictions(), aList);
+                    rcAdapter = recyclerviewAdapter;
                     destination_list.setAdapter(recyclerviewAdapter);
                 }).addOnFailureListener((exception) -> {
                     if (exception instanceof ApiException) {
@@ -184,30 +192,60 @@ public class RequestActivity extends AppCompatActivity implements ServerCallback
             }
         });
 
+        /*
         AutoCompleteTextView exposedDropdown_1 = findViewById(R.id.trip_type);
         String[] items_1 = new String[]{"Temporary", "Recurring"};
         ArrayAdapter<String> adapter_1 = new ArrayAdapter<>(this, R.layout.dropdown_item, items_1);
         exposedDropdown_1.setAdapter(adapter_1);
 
-
         AutoCompleteTextView exposedDropdown_2 = findViewById(R.id.rating);
         String[] items_2= new String[]{"0 Star", "1 Star", "2 Star", "3 Star", "4 Star"};
         ArrayAdapter<String> adapter_2 = new ArrayAdapter<>(this, R.layout.dropdown_item, items_2);
         exposedDropdown_2.setAdapter(adapter_2);
+        */
 
         searched();
     }
 
     private void searched(){
+        String[] arraySpinner = new String[] {
+               "0", "1", "2", "3", "4"
+        };
+
+        String[] arraySpinner2 = new String[] {
+                "1", "2", "3", "4"
+        };
+
         search = findViewById(R.id.searchButt);
         dep = findViewById(R.id.departure);
         dest = findViewById(R.id.destination);
-        //rating = findViewById(R.id.ratingSelect);
+
+        rating = findViewById(R.id.ratingSelect);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, arraySpinner);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        rating.setAdapter(adapter);
+
+        riders = findViewById(R.id.maxRider);
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, arraySpinner2);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        riders.setAdapter(adapter2);
+
+
 
         search.setOnClickListener(view -> {
-            //requestRide(Constants.UID, dep.getText().toString(), dest.getText().toString(), "1", "2");
-            //Log.d("A", rating.getSelectedItem().toString());
+            startId = rcAdapter.getList().get(0);
+            finishId = rcAdapter.getList().get(1);
+            Log.d("place ID",startId);
+            Log.d("place ID",finishId);
+            Log.d("UID", getSharedPreferences(Constants.PREFERENCES, MODE_PRIVATE).getString(Constants.UID, null));
+            requestRide(getSharedPreferences(Constants.PREFERENCES, MODE_PRIVATE).getString(Constants.UID, null), dep.getText().toString(), startId, dest.getText().toString(), finishId, rating.getSelectedItem().toString(), riders.getSelectedItem().toString());
         });
+    }
+
+    public ArrayList<String> getList(){
+        return aList;
     }
 
     @Override
@@ -218,8 +256,8 @@ public class RequestActivity extends AppCompatActivity implements ServerCallback
         return super.onOptionsItemSelected(item);
     }
 
-    private void requestRide(String uID, String startLocation, String endLocation, String minRating, String maxRiders){
-        QueryServer.requestRide(this, uID, startLocation, endLocation, minRating, maxRiders);
+    private void requestRide(String uID, String startLocation, String startID, String endLocation, String endID, String minRating, String maxRiders){
+        QueryServer.requestRide(this, uID, startLocation, startID, endLocation, endID, minRating, maxRiders);
     }
 
     @Override
@@ -229,6 +267,6 @@ public class RequestActivity extends AppCompatActivity implements ServerCallback
 
     @Override
     public Context getContext() {
-        return null;
+        return this;
     }
 }

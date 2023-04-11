@@ -157,7 +157,24 @@ public class QueryServer {
         connectToServer(serverCallback, jsonBody.toString(), url);
     }
 
-    public static void requestRide(ServerCallback serverCallback, String uID, String startLocation, String endLocation, String minRating, String maxRiders){
+    public static void requestRide(ServerCallback serverCallback, String uID, String startLocation, String startID, String endLocation, String endID, String minRating, String maxRiders){
+        String url = BASE_URL + Constants.REQUEST_RIDE;
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("requester", uID);
 
+            jsonBody.put("start_location", startLocation);
+            jsonBody.put("start_location_id", "");
+
+            jsonBody.put("end_location", endLocation);
+            jsonBody.put("end_location_id", endID);
+
+            jsonBody.put("min_rating", minRating);
+            jsonBody.put("max_riders", maxRiders);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        connectToServer(serverCallback, jsonBody.toString(), url);
     }
 }
