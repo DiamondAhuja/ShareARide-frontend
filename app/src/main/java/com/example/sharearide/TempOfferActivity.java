@@ -3,6 +3,7 @@ package com.example.sharearide;
 import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,6 +22,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sharearide.adapter.RecyclerviewAdapter;
+import com.example.sharearide.utils.Constants;
+import com.example.sharearide.utils.DiscordService;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
@@ -183,6 +186,14 @@ public class TempOfferActivity extends AppCompatActivity {
         submit_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SharedPreferences preferences = getSharedPreferences(Constants.PREFERENCES, MODE_PRIVATE);
+                if (preferences.contains(Constants.DISCORD_TOKEN))
+                {
+                    Intent serviceIntent = new Intent(TempOfferActivity.this, DiscordService.class);
+                    serviceIntent.putExtra("Token", preferences.getString(Constants.DISCORD_TOKEN, null));
+                    serviceIntent.setAction("START_ACTIVITY_ACTION");
+                    startService(serviceIntent);
+                }
                 Intent intent = new Intent(TempOfferActivity.this, NotificationActivity.class);
                 startActivity(intent);
             }
