@@ -9,6 +9,7 @@ public class Constants {
     public final static String URL = PUBLIC_URL;
     public final static String LOGIN = "login/";
     public final static String REGISTER = "registeraccount/";
+    public final static String SCANQRCODE = "scanqrcode/";
     public final static String GETRIDEINFO = "getrideinfo/";
     public final static String GET_USER_INFO = "getuserinfo/";
     public final static String EDIT_PROFILE = "editprofile/";

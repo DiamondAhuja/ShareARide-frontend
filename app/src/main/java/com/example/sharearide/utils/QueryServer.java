@@ -145,13 +145,25 @@ public class QueryServer {
 
     }
 
-
     public static void getRideInfo(ServerCallback serverCallback, String rideId) {
         String url = BASE_URL + Constants.GETRIDEINFO;
 
         JSONObject jsonBody = new JSONObject();
         try {
             jsonBody.put("RideID", rideId);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        connectToServer(serverCallback, jsonBody.toString(), url);
+    }
+
+    public static void scanQRCode(ServerCallback serverCallback, String qrcode) {
+        String url = BASE_URL + Constants.SCANQRCODE;
+
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("qrcode", qrcode);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }

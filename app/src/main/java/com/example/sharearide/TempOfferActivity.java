@@ -32,13 +32,18 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 public class TempOfferActivity extends AppCompatActivity {
 
     private Button submit_btn;
-    private EditText departure, destination;
+    private EditText departure, destination, taxi_id;
     private RecyclerView departure_list, destination_list;
     private String apiKey;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.temp_offer_page);
+
+        Intent intent = getIntent();
+        String taxiId = intent.getStringExtra("taxiId");
+        taxi_id = (EditText) findViewById(R.id.taxi_id);
+        taxi_id.setText(taxiId);
 
         // set toolbar format
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
