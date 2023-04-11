@@ -26,6 +26,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".SearchFriendsActivity"
+            android:exported="false" />
+        <activity
             android:name=".EditProfileActivity"
             android:exported="false" />
 
@@ -41,7 +44,7 @@
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
-            android:exported="false">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -56,9 +59,7 @@
 
         <activity
             android:name=".MainActivity"
-            android:exported="false" >
-        </activity>
-
+            android:exported="false"></activity>
         <activity
             android:name=".ProfileActivity"
             android:exported="false" />

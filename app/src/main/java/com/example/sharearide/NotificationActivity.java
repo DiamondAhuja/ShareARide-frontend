@@ -22,7 +22,7 @@ import com.example.sharearide.adapter.RecyclerviewAdapter;
 import java.util.Arrays;
 import java.util.List;
 
-public class NotificationActivity extends AppCompatActivity {
+public class    NotificationActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private Button submit_btn;
